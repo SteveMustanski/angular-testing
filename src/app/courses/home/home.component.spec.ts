@@ -52,7 +52,6 @@ describe('HomeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-
   it("should display only beginner courses", () => {
     coursesService.findAllCourses.and.returnValue(of(beginnerCourses)); // of because findAllCourses needs to return observable
 
@@ -74,7 +73,6 @@ describe('HomeComponent', () => {
     expect(tabs.length).toBe(1, 'Unexpected number of tabs found');
   });
 
-
   it("should display both tabs", () => {
     coursesService.findAllCourses.and.returnValue(of(allCourses)); // of because findAllCourses needs to return observable
 
@@ -84,7 +82,6 @@ describe('HomeComponent', () => {
 
     expect(tabs.length).toBe(2, 'Expected to find 2 tabs');
   });
-
 
   it("should display advanced courses when tab clicked", fakeAsync(() => {
     coursesService.findAllCourses.and.returnValue(of(allCourses)); // of because findAllCourses needs to return observable
@@ -102,7 +99,6 @@ describe('HomeComponent', () => {
     const cardTitles = el.queryAll(By.css('.mat-tab-body-active .mat-card-title'));
 
     expect(cardTitles.length).toBeGreaterThan(0, 'Could not find card titles');
-
     expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course');
   }));
 });
