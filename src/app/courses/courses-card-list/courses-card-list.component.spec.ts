@@ -17,6 +17,8 @@ describe('CoursesCardListComponent', () => {
 
   let fixture: ComponentFixture<CoursesCardListComponent>;
 
+  let el: DebugElement;
+
   beforeEach(waitForAsync(() => {  //make sure that before each completes with waitForAsync
     TestBed.configureTestingModule({
       imports: [CoursesModule]
@@ -25,8 +27,8 @@ describe('CoursesCardListComponent', () => {
     .then(() => {
         fixture = TestBed.createComponent(CoursesCardListComponent);
         component = fixture.componentInstance;
+        el = fixture.debugElement;
     });
-
   }));
 
   it("should create the component", () => {
@@ -35,21 +37,36 @@ describe('CoursesCardListComponent', () => {
 
   });
 
-
   it("should display the course list", () => {
 
-    pending();
+    component.courses = setupCourses(); // setupCourses is a homegrown helper utility to create the data
 
+    fixture.detectChanges();
+
+    const cards = el.queryAll(By.css('.course-card'));
+
+    expect(cards).toBeTruthy('Could not find cards');
+    expect(cards.length).toBe(12, 'Unexpected number of cards');
   });
 
 
   it("should display the first course", () => {
 
-      pending();
+    component.courses = setupCourses();
+
+    fixture.detectChanges();
+
+    const course = component.courses[0];
+
+    const card = el.query(By.css('.course-card:first-child'));
+    const title = card.query(By.css('mat-card-title'));
+    const img = card.query(By.css('img'))
+
+    expect(card).toBeTruthy('card not displayed');
+    expect(title.nativeElement.textContent).toBe(course.titles.description);
+    expect(img.nativeElement.src).toBe(course.iconUrl);
 
   });
-
-
 });
 
 
