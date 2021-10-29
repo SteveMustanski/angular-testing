@@ -25,7 +25,7 @@ describe('HomeComponent', () => {
 
   const beginnerCourses = setupCourses().filter(course => course.category === 'BEGINNER');
   const advancedCourses = setupCourses().filter(course => course.category === 'ADVANCED');
-  const allCources = setupCourses();
+  const allCourses = setupCourses();
 
   beforeEach(waitForAsync((() => {
 
@@ -61,12 +61,10 @@ describe('HomeComponent', () => {
     const tabs = el.queryAll(By.css('.mat-tab-label'));
 
     expect(tabs.length).toBe(1, 'Unexpected number of tabs found');
-
   });
 
 
   it("should display only advanced courses", () => {
-
     coursesService.findAllCourses.and.returnValue(of(advancedCourses)); // of because findAllCourses needs to return observable
 
     fixture.detectChanges();
@@ -74,29 +72,39 @@ describe('HomeComponent', () => {
     const tabs = el.queryAll(By.css('.mat-tab-label'));
 
     expect(tabs.length).toBe(1, 'Unexpected number of tabs found');
-
   });
 
 
   it("should display both tabs", () => {
-
-    coursesService.findAllCourses.and.returnValue(of(allCources)); // of because findAllCourses needs to return observable
+    coursesService.findAllCourses.and.returnValue(of(allCourses)); // of because findAllCourses needs to return observable
 
     fixture.detectChanges();
 
     const tabs = el.queryAll(By.css('.mat-tab-label'));
 
     expect(tabs.length).toBe(2, 'Expected to find 2 tabs');
-
   });
 
 
-  it("should display advanced courses when tab clicked", () => {
+  it("should display advanced courses when tab clicked", fakeAsync(() => {
+    coursesService.findAllCourses.and.returnValue(of(allCourses)); // of because findAllCourses needs to return observable
 
-    pending();
+    fixture.detectChanges();
 
-  });
+    const tabs = el.queryAll(By.css('.mat-tab-label'));
 
+    click(tabs[1]);
+
+    fixture.detectChanges();
+
+    flush();
+
+    const cardTitles = el.queryAll(By.css('.mat-tab-body-active .mat-card-title'));
+
+    expect(cardTitles.length).toBeGreaterThan(0, 'Could not find card titles');
+
+    expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course');
+  }));
 });
 
 
